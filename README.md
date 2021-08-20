@@ -7,7 +7,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+git clone https://github.com/alitaknife/days-gone-front.git
 
 # 进入项目目录
 cd days-gone-vue
