@@ -129,7 +129,7 @@ export default {
         editSubmit(data) {
             this.editLoading = true
             update(data).then(res => {
-                this.$message.success(res.message)
+                this.$message.success(res.msg)
                 this.editVisible = false
                 this.onSubmit()
             }).catch(() => {}).finally(() => {
@@ -145,7 +145,7 @@ export default {
             }
             this.deleLoading = true
             update(form).then(res => {
-                this.$message.success(res.message)
+                this.$message.success(res.msg)
                 this.onSubmit()
             }).catch(() => {}).finally(() => {
                 this.deleLoading = false

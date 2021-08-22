@@ -54,7 +54,7 @@ export default {
                 if (fileSize > 8) {
                     this.$message.warning('所选文件不能大于 8M')
                 } else {
-                    this.$refs.upload.submit()
+                    this.$refs.upload.submit() // 触发上面的 handleUpload()
                 }
             } else {
                 this.$message.warning('请至少选择一个文件')

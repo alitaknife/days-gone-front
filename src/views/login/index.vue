@@ -1,100 +1,80 @@
 <template>
     <div class="login-container">
+        <!-- 左侧登录模块 -->
         <div class="login-form-box">
             <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-                <div class="title-container"></div>
-
-                <el-form-item prop="username">
-                    <!-- <span class="svg-container">
-					<svg-icon icon-class="user" />
-				</span> -->
-                    <el-input
-                        ref="username"
-                        v-model="loginForm.username"
-                        placeholder="Username"
-                        prefix-icon="el-icon-user-solid"
-                        name="username"
-                        type="text"
-                        tabindex="1"
-                        auto-complete="on"
-                    />
+                <div class="title-box"></div>
+                <el-form-item prop="userName">
+                    <el-input ref="username" v-model.trim="loginForm.userName" placeholder="用户名" prefix-icon="el-icon-user" />
                 </el-form-item>
-
-                <el-form-item prop="password">
-                    <!-- <span class="svg-container">
-					<svg-icon icon-class="password" />
-				</span> -->
-                    <el-input
-                        :key="passwordType"
-                        ref="password"
-                        v-model="loginForm.password"
-                        :type="passwordType"
-                        prefix-icon="el-icon-lock"
-                        suffix-icon="el-icon-view"
-                        placeholder="Password"
-                        name="password"
-                        tabindex="2"
-                        auto-complete="on"
-                        @keyup.enter.native="handleLogin"
-                    />
-                    <!-- <span class="show-pwd" @click="showPwd">
-					<svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-				</span> -->
+                <el-form-item prop="userPwd">
+                    <el-input ref="password" v-model.trim="loginForm.userPwd" :type="passwordType" prefix-icon="el-icon-lock" placeholder="密码" auto-complete="on" />
+                    <span class="show-pwd" @click="showPwd">
+                        <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+                    </span>
                 </el-form-item>
-
-                <el-form-item prop="username">
-                    <!-- <span class="svg-container">
-					<svg-icon icon-class="user" />
-				</span> -->
-                    <el-input ref="code" v-model="loginForm.code" placeholder="Code" prefix-icon="el-icon-user-solid" name="code" type="text" tabindex="1" auto-complete="on" />
+                <el-form-item prop="vcode">
+                    <el-input ref="vcode" v-model="loginForm.vcode" placeholder="验证码" prefix-icon="el-icon-check">
+                        <i slot="suffix">
+                            <div class="v-box"></div>
+                        </i>
+                    </el-input>
                 </el-form-item>
-
-                <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">Login</el-button>
+                <el-button :loading="loading" type="primary" style="width: 100%" @click.native.prevent="handleLogin" @keyup.enter.native="handleLogin">登 录</el-button>
+                <span>没有账号？</span><el-button type="text" @click.native.prevent="signUpVisible = true">点击注册</el-button>
             </el-form>
         </div>
-        <!-- 右侧背景 -->
-        <div class="right-container">
+        <!-- 右侧背景模块 -->
+        <div class="right-container hidden-sm-and-down">
             <div class="box-bg"></div>
-            <div class="phone"></div>
-            <div class="plant"></div>
+            <div class="phone hidden-md-and-down"></div>
+            <div class="plant hidden-lg-and-down"></div>
             <div class="commit"></div>
         </div>
+        <!-- 用户注册模块,该模块和登录页没什么交互，注册的所有逻辑直接封装在里面 -->
+        <sign-up :visible.sync="signUpVisible"></sign-up>
     </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validUsername, validUserPwd } from '@/utils/validate'
+import { signUp } from './compnents/index'
+import { signIn } from '@/api/user'
 
 export default {
     name: 'Login',
+    components: {
+        signUp
+    },
     data() {
         const validateUsername = (rule, value, callback) => {
             if (!validUsername(value)) {
-                callback(new Error('Please enter the correct user name'))
+                callback(new Error('请输入4到16位字符（字母，数字，下划线，减号）'))
             } else {
                 callback()
             }
         }
         const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-                callback(new Error('The password can not be less than 6 digits'))
+            if (!validUserPwd(value)) {
+                callback(new Error('只能输入6-20个字母、数字、下划线...'))
             } else {
                 callback()
             }
         }
         return {
             loginForm: {
-                username: 'admin',
-                password: '111111',
-                code: 'kkk',
+                userName: 'admin',
+                userPwd: '123456',
+                vcode: '',
             },
             loginRules: {
-                username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+                userName: [{ required: true, trigger: 'blur', validator: validateUsername }],
+                userPwd: [{ required: true, trigger: 'blur', validator: validatePassword }],
             },
             loading: false,
             passwordType: 'password',
             redirect: undefined,
+            signUpVisible: false,
         }
     },
     mounted() {},
@@ -135,7 +115,7 @@ export default {
                     return false
                 }
             })
-        },
+        }
     },
 }
 </script>
@@ -144,6 +124,13 @@ export default {
 $bg: rgb(246, 250, 254);
 $dark_gray: #889aa4;
 $light_gray: #eee;
+$shodow: 0 0 10px rgb(0 0 0 / 3%);
+
+// 修改内置按钮样式
+::v-deep .el-input__inner {
+    border: none;
+    box-shadow: $shodow;
+}
 
 .login-container {
     position: relative;
@@ -171,8 +158,9 @@ $light_gray: #eee;
             background-repeat: no-repeat;
             background-size: 80px 120px;
             background-image: url('https://gitee.com/alitaknife/images/raw/master/img/zhuzi.png');
+            animation: fadeIn 1s;
 
-            .title-container {
+            .title-box {
                 position: relative;
                 top: -60px;
                 left: 90px;
@@ -183,6 +171,21 @@ $light_gray: #eee;
                 background-image: url('https://gitee.com/alitaknife/images/raw/master/img/panda.png');
                 background-size: contain;
                 box-shadow: 0 0 20px rgb(0 0 0 / 15%);
+                animation: fadeInRotate 1.5s 1 normal forwards ease;
+            }
+
+            .v-box {
+                height: 100%;
+                width: 40px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-image: url('https://gitee.com/alitaknife/images/raw/master/img/vcode.png');
+                // background-color: red;
+            }
+
+            span {
+                font-size: 13px;
+                color: #909399;
             }
         }
     }
@@ -196,7 +199,7 @@ $light_gray: #eee;
 
         .box-bg {
             position: absolute;
-            height: 750px;
+            height: 780px;
             width: 100%;
             top: -20px;
             right: -20px;
@@ -231,7 +234,7 @@ $light_gray: #eee;
             height: 700px;
             width: 380px;
             background-size: contain;
-			background-repeat: no-repeat;
+            background-repeat: no-repeat;
             background-image: url('https://gitee.com/alitaknife/images/raw/master/img/time.png');
         }
     }
@@ -247,22 +250,29 @@ $light_gray: #eee;
     .show-pwd {
         position: absolute;
         right: 10px;
-        top: 7px;
+        top: 3px;
         font-size: 16px;
         color: $dark_gray;
         cursor: pointer;
         user-select: none;
     }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale3d(0.95, 0.95, 0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale3d(0.95, 0.95, 0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale3d(1, 1, 1);
-        }
+@keyframes fadeInRotate {
+    from {
+        position: relative;
+        left: -500px;
+        transform: rotate(-720deg);
     }
 }
 </style>
