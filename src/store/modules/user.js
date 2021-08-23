@@ -1,102 +1,100 @@
-import { signIn, logout, getInfo } from '@/api/user'
+import { signIn, logOut, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
-	return {
-		token: getToken(),
-		name: '',
-		avatar: ''
-	}
+    return {
+        token: getToken(),
+        userName: '',
+        userNickname: '',
+        avatar: '',
+        email: '',
+        emailValidated: '',
+        lastActive: '',
+        phone: '',
+        phoneValidated: '',
+        profile: '',
+        sex: '',
+        signUpAt: '',
+        status: ''
+    }
 }
 
 const state = getDefaultState()
 
 const mutations = {
-	RESET_STATE: (state) => {
-		Object.assign(state, getDefaultState())
-	},
-	SET_TOKEN: (state, token) => {
-		state.token = token
-	},
-	SET_NAME: (state, name) => {
-		state.name = name
-	},
-	SET_AVATAR: (state, avatar) => {
-		state.avatar = avatar
-	}
+    RESET_STATE: state => {
+        Object.assign(state, getDefaultState())
+    },
+    SET_INFO: (state, info = {}) => {
+        Object.assign(state, info)
+    },
+    SET_TOKEN: (state, token) => {
+        state.token = token
+    }
 }
 
 const actions = {
-	// user login
-	login({ commit }, userInfo) {
-		return new Promise((resolve, reject) => {
-			signIn(userInfo).then(response => {
-				const { data } = response
-				commit('SET_TOKEN', data.token)
-				setToken(data.token)
-				resolve()
-			}).catch(error => {
-				reject(error)
-			})
-		})
-	},
+    // 用户登录
+    login({ commit }, userInfo) {
+        return new Promise((resolve, reject) => {
+            signIn(userInfo)
+                .then(response => {
+                    const { data } = response
+                    commit('SET_TOKEN', data.token)
+                    setToken(data.token)
+                    resolve()
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
 
-	// get user info
-	getInfo({ commit, state }) {
-		return new Promise((resolve, reject) => {
-			const { data } = { data: { name: 'alita', avatar: 'https://avatars.githubusercontent.com/u/84905781?v=4' } }
-			const { name, avatar } = data
-			commit('SET_NAME', name)
-			commit('SET_AVATAR', avatar)
-			resolve(data)
+    // 获取用户信息
+    getInfo({ commit }) {
+        return new Promise((resolve, reject) => {
+            getInfo()
+                .then(response => {
+                    const { data } = response
+                    commit('SET_INFO', data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
 
-			// getInfo(state.token).then(response => {
-			//   const { data } = response
+    // 用户登出
+    logOut({ commit }) {
+        return new Promise((resolve, reject) => {
+            logOut()
+                .then(() => {
+                    removeToken() // must remove  token  first
+                    resetRouter()
+                    commit('RESET_STATE')
+                    resolve()
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
 
-			//   if (!data) {
-			//     return reject('Verification failed, please Login again.')
-			//   }
-
-			//   const { name, avatar } = data
-
-			//   commit('SET_NAME', name)
-			//   commit('SET_AVATAR', avatar)
-			//   resolve(data)
-			// }).catch(error => {
-			//   reject(error)
-			// })
-		})
-	},
-
-	// user logout
-	logout({ commit, state }) {
-		return new Promise((resolve, reject) => {
-			logout(state.token).then(() => {
-				removeToken() // must remove  token  first
-				resetRouter()
-				commit('RESET_STATE')
-				resolve()
-			}).catch(error => {
-				reject(error)
-			})
-		})
-	},
-
-	// remove token
-	resetToken({ commit }) {
-		return new Promise(resolve => {
-			removeToken() // must remove  token  first
-			commit('RESET_STATE')
-			resolve()
-		})
-	}
+    // 移除 token
+    resetToken({ commit }) {
+        return new Promise(resolve => {
+            removeToken() // must remove  token  first
+            commit('RESET_STATE')
+            resolve()
+        })
+    }
 }
 
 export default {
-	namespaced: true,
-	state,
-	mutations,
-	actions
+    namespaced: true,
+    state,
+    mutations,
+    actions
 }
-

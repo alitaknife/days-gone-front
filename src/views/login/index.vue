@@ -44,7 +44,7 @@ import { signIn } from '@/api/user'
 export default {
     name: 'Login',
     components: {
-        signUp
+        signUp,
     },
     data() {
         const validateUsername = (rule, value, callback) => {
@@ -63,8 +63,8 @@ export default {
         }
         return {
             loginForm: {
-                userName: 'admin',
-                userPwd: '123456',
+                userName: 'alita',
+                userPwd: '1234567',
                 vcode: '',
             },
             loginRules: {
@@ -115,7 +115,7 @@ export default {
                     return false
                 }
             })
-        }
+        },
     },
 }
 </script>

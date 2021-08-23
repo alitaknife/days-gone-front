@@ -9,7 +9,8 @@
                         value-format="yyyy-MM-dd"
                         range-separator="至"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                        end-placeholder="结束日期"
+                    >
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="文件名">
@@ -42,13 +43,13 @@
                 </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作">
-            <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.row)">编 辑</el-button>
-                <el-popconfirm title="确定删除吗？" style="margin: 0 5px;" @confirm="handleDelete(scope.row)">
-                    <el-button :loading="deleLoading" slot="reference" icon="el-icon-close" type="danger" size="mini">删 除</el-button>
-                </el-popconfirm>
-                <el-button :loading="downloadLoading" type="success" icon="el-icon-download" size="mini" @click="handleDownload(scope.row)">下 载</el-button>
-            </template>
+                <template slot-scope="scope">
+                    <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.row)">编 辑</el-button>
+                    <el-popconfirm title="确定删除吗？" style="margin: 0 5px" @confirm="handleDelete(scope.row)">
+                        <el-button :loading="deleLoading" slot="reference" icon="el-icon-close" type="danger" size="mini">删 除</el-button>
+                    </el-popconfirm>
+                    <el-button :loading="downloadLoading" type="success" icon="el-icon-download" size="mini" @click="handleDownload(scope.row)">下 载</el-button>
+                </template>
             </el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -60,7 +61,8 @@
             background
             layout="total, sizes, prev, pager, next, jumper"
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange">
+            @current-change="handleCurrentChange"
+        >
         </el-pagination>
         <!-- 弹出框 -->
         <edit-dialog :visible.sync="editVisible" :loading="editLoading" :formData="editFormData" @submit="editSubmit"></edit-dialog>
@@ -70,11 +72,11 @@
 <script>
 import { getFileList, update, download } from '@/api/file'
 import { editDialog } from './components/index'
-import { downloadFile } from "@/utils"
+import { downloadFile } from '@/utils'
 
 export default {
     components: {
-        editDialog
+        editDialog,
     },
     data() {
         return {
@@ -90,20 +92,20 @@ export default {
             page: {
                 current: 1,
                 size: 10,
-                total: 0
+                total: 0,
             },
             tableData: [],
             // 编辑
             editVisible: false,
-            editFormData: {}
+            editFormData: {},
         }
     },
-    mounted () {
+    mounted() {
         this.onSubmit()
     },
     methods: {
-        formatSize(row) {  
-            return row.fileSize? `${(row.fileSize/1024/1024).toFixed(2)} M`: ''
+        formatSize(row) {
+            return row.fileSize ? `${(row.fileSize / 1024 / 1024).toFixed(2)} M` : ''
         },
         handleSizeChange(size) {
             this.page.size = size
@@ -120,45 +122,54 @@ export default {
             const form = {
                 id: row.id,
                 fileName: row.fileName.substring(0, row.fileName.lastIndexOf('.')),
-                type: row.fileName.substring(row.fileName.lastIndexOf(".")),
-                status: row.status
+                type: row.fileName.substring(row.fileName.lastIndexOf('.')),
+                status: row.status,
             }
             this.editFormData = form
         },
         // 编辑回调
         editSubmit(data) {
             this.editLoading = true
-            update(data).then(res => {
-                this.$message.success(res.msg)
-                this.editVisible = false
-                this.onSubmit()
-            }).catch(() => {}).finally(() => {
-                this.editLoading = false
-            })
+            update(data)
+                .then((res) => {
+                    this.$message.success(res.msg)
+                    this.editVisible = false
+                    this.onSubmit()
+                })
+                .catch(() => {})
+                .finally(() => {
+                    this.editLoading = false
+                })
         },
         // 删除
         handleDelete(row) {
             const form = {
                 id: row.id,
                 fileName: row.fileName,
-                status: 2
+                status: 2,
             }
             this.deleLoading = true
-            update(form).then(res => {
-                this.$message.success(res.msg)
-                this.onSubmit()
-            }).catch(() => {}).finally(() => {
-                this.deleLoading = false
-            })
+            update(form)
+                .then((res) => {
+                    this.$message.success(res.msg)
+                    this.onSubmit()
+                })
+                .catch(() => {})
+                .finally(() => {
+                    this.deleLoading = false
+                })
         },
         // 下载
         handleDownload(row) {
             this.downloadLoading = true
-            download({ id: row.id }).then(res => {
-                downloadFile(res, row.fileName)
-            }).catch(() => {}).finally(() => {
-                this.downloadLoading = false
-            })
+            download({ id: row.id })
+                .then((res) => {
+                    downloadFile(res, row.fileName)
+                })
+                .catch(() => {})
+                .finally(() => {
+                    this.downloadLoading = false
+                })
         },
         // 查询
         handleSearch() {
@@ -168,15 +179,18 @@ export default {
         // 获取列表
         onSubmit() {
             this.loading = true
-            getFileList({ ...this.formInline, ...this.page }).then(res => {
-                this.tableData = res.data.list
-                this.page.total = res.data.total
-                this.page.current = res.data.current
-                this.page.size = res.data.size
-            }).catch(() => {}).finally(() => {
-                this.loading = false
-            })
-        }
+            getFileList({ ...this.formInline, ...this.page })
+                .then((res) => {
+                    this.tableData = res.data.list
+                    this.page.total = res.data.total
+                    this.page.current = res.data.current
+                    this.page.size = res.data.size
+                })
+                .catch(() => {})
+                .finally(() => {
+                    this.loading = false
+                })
+        },
     },
 }
 </script>
