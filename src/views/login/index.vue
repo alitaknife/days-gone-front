@@ -39,7 +39,6 @@
 <script>
 import { validUsername, validUserPwd } from '@/utils/validate'
 import { signUp } from './compnents/index'
-import { signIn } from '@/api/user'
 
 export default {
     name: 'Login',

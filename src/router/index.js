@@ -30,15 +30,28 @@ export const constantRoutes = [
 		}]
 	},
 
-	{
-		path: '/file-list',
+    {
+		path: '/user-file',
 		component: Layout,
 		children: [
 			{
 				path: 'index',
-				name: 'fileList',
-				component: () => import('@/views/file-list/index'),
-				meta: { title: '文件列表', icon: 'form' }
+				name: 'userFile',
+				component: () => import('@/views/user-file/index'),
+				meta: { title: '用户文件', icon: 'user-file' }
+			}
+		]
+	},
+
+	{
+		path: '/file',
+		component: Layout,
+		children: [
+			{
+				path: 'index',
+				name: 'file',
+				component: () => import('@/views/file/index'),
+				meta: { title: '文件仓库', icon: 'file' }
 			}
 		]
 	},
@@ -51,7 +64,7 @@ export const constantRoutes = [
 				path: 'index',
 				name: 'Upload',
 				component: () => import('@/views/upload/index'),
-				meta: { title: '上传', icon: 'form' }
+				meta: { title: '上传', icon: 'upload' }
 			}
 		]
 	},

@@ -18,9 +18,9 @@
                 </el-form-item>
                 <el-form-item label="状态">
                     <el-select v-model="formInline.status">
+                        <el-option label="全部" value=""></el-option>
                         <el-option label="可用" :value="0"></el-option>
                         <el-option label="禁用" :value="1"></el-option>
-                        <el-option label="已删除" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -34,21 +34,20 @@
             <el-table-column prop="fileName" label="文件名"></el-table-column>
             <el-table-column prop="fileSha1" label="hash" width="300"></el-table-column>
             <el-table-column prop="fileSize" label="大小" width="80" :formatter="formatSize"></el-table-column>
-            <el-table-column prop="fileAddr" label="地址"></el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column prop="fileAddr" label="地址" width="380"></el-table-column>
+            <el-table-column prop="status" label="状态" width="80">
                 <template slot-scope="{ row }">
                     <el-tag v-if="row.status == 0" size="small">可用</el-tag>
                     <el-tag v-else-if="row.status == 1" type="warning" size="small">禁用</el-tag>
-                    <el-tag v-else type="danger" size="small">已删除</el-tag>
                 </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作">
-                <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.row)">编 辑</el-button>
-                    <el-popconfirm title="确定删除吗？" style="margin: 0 5px" @confirm="handleDelete(scope.row)">
+                <template slot-scope="{ row }">
+                    <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(row)">编 辑</el-button>
+                    <el-popconfirm title="确定删除吗？" style="margin: 0 5px" @confirm="handleDelete(row)">
                         <el-button :loading="deleLoading" slot="reference" icon="el-icon-close" type="danger" size="mini">删 除</el-button>
                     </el-popconfirm>
-                    <el-button :loading="downloadLoading" type="success" icon="el-icon-download" size="mini" @click="handleDownload(scope.row)">下 载</el-button>
+                    <el-button v-if="row.status == 0" :loading="downloadLoading" type="success" icon="el-icon-download" size="mini" @click="handleDownload(row)">下 载</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -70,7 +69,7 @@
 </template>
 
 <script>
-import { getFileList, update, download } from '@/api/file'
+import { getFileList, update, deleted, download } from '@/api/file'
 import { editDialog } from './components/index'
 import { downloadFile } from '@/utils'
 
@@ -83,7 +82,7 @@ export default {
             formInline: {
                 creatAt: [],
                 fileName: '',
-                status: 0,
+                status: '',
             },
             loading: false,
             editLoading: false,
@@ -143,13 +142,8 @@ export default {
         },
         // 删除
         handleDelete(row) {
-            const form = {
-                id: row.id,
-                fileName: row.fileName,
-                status: 2,
-            }
             this.deleLoading = true
-            update(form)
+            deleted(row.id)
                 .then((res) => {
                     this.$message.success(res.msg)
                     this.onSubmit()

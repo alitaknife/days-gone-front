@@ -25,11 +25,19 @@ export function update(data) {
     })
 }
 
+export function deleted(id) {
+    return request({
+        url: '/file/delete',
+        method: 'get',
+        params: { id }
+    })
+}
+
 export function download(data) {
     return request({
         url: '/file/download',
         method: 'get',
-		responseType: 'blob',
+        responseType: 'blob',
         params: { ...data }
     })
 }

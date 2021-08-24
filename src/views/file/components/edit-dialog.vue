@@ -10,7 +10,6 @@
                 <el-select v-model="form.status" style="width: 350px" placeholder="请选择状态">
                     <el-option label="可用" :value="0"></el-option>
                     <el-option label="禁用" :value="1"></el-option>
-                    <el-option label="已删除" :value="2"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>

@@ -3,14 +3,13 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// create an axios instance
+// 通用 axios 实例
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     // withCredentials: true, // send cookies when cross-domain requests
-    timeout: 5000 // request timeout
+    timeout: 5000
 })
 
-// request interceptor
 service.interceptors.request.use(
     config => {
         if (store.getters.token) {
@@ -19,19 +18,17 @@ service.interceptors.request.use(
         return config
     },
     error => {
-        console.log(error) // for debug
+        console.log(error)
         return Promise.reject(error)
     }
 )
-
-// response interceptor
 service.interceptors.response.use(
     response => {
         const res = response.data
         console.log(res)
-        // 下载二进制文件
+        // 处理 Blob 对象
         if (res instanceof Blob) {
-            return res
+            return handleBlob(res)
         }
         // 正常数据返回
         if (res.code != 0) {
@@ -46,7 +43,7 @@ service.interceptors.response.use(
         }
     },
     error => {
-        console.log('err' + error) // for debug
+        console.log('err' + error)
         Message({
             message: error.message,
             type: 'error',
@@ -55,5 +52,30 @@ service.interceptors.response.use(
         return Promise.reject(error)
     }
 )
+
+// Blob 对象处理，主要是为了处理封装了 json 的 blob
+const handleBlob = d => {
+    return new Promise((resolve, reject) => {
+        if (d.type == 'application/json') {
+            const reader = new FileReader()
+            reader.readAsText(d, 'utf-8')
+            reader.onload = () => {
+                const r = JSON.parse(reader.result)
+                if (r.code != 0) {
+                    Message({
+                        message: r.msg || 'Error',
+                        type: 'error',
+                        duration: 5 * 1000
+                    })
+                    reject(r)
+                } else {
+                    resolve(r)
+                }
+            }
+        } else {
+            resolve(d)
+        }
+    })
+}
 
 export default service
