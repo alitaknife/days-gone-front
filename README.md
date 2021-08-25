@@ -1,6 +1,6 @@
 # days-gone-vue
 
-> 仿放盘系统前端
+> 仿网盘系统前端
 
 
 ## Build Setup
