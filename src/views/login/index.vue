@@ -76,7 +76,6 @@ export default {
             signUpVisible: false,
         }
     },
-    mounted() {},
     watch: {
         $route: {
             handler: function (route) {
@@ -84,6 +83,9 @@ export default {
             },
             immediate: true,
         },
+    },
+    created() {
+        this.$store.dispatch('user/location')
     },
     methods: {
         showPwd() {

@@ -2,6 +2,18 @@ import { signIn, logOut, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
+const getLocation = () => {
+    const locInStorage = localStorage.getItem('location')
+    if (locInStorage) {
+        return JSON.parse(locInStorage)
+    } else {
+        return {
+            city: '北京',
+            province: '北京'
+        }
+    }
+}
+
 const getDefaultState = () => {
     return {
         token: getToken(),
@@ -16,7 +28,8 @@ const getDefaultState = () => {
         profile: '',
         sex: '',
         signUpAt: '',
-        status: ''
+        status: '',
+        location: getLocation()
     }
 }
 
@@ -31,6 +44,9 @@ const mutations = {
     },
     SET_TOKEN: (state, token) => {
         state.token = token
+    },
+    SET_LOCATION: (state, location) => {
+        state.location = location
     }
 }
 
@@ -71,13 +87,15 @@ const actions = {
         return new Promise((resolve, reject) => {
             logOut()
                 .then(() => {
-                    removeToken() // must remove  token  first
-                    resetRouter()
-                    commit('RESET_STATE')
                     resolve()
                 })
                 .catch(error => {
                     reject(error)
+                })
+                .finally(() => {
+                    removeToken() // must remove  token  first
+                    resetRouter()
+                    commit('RESET_STATE')
                 })
         })
     },
@@ -89,6 +107,53 @@ const actions = {
             commit('RESET_STATE')
             resolve()
         })
+    },
+
+    // 获取用户定位
+    location({ commit }) {
+        // 定位获取方法
+        const getLocation = () => {
+            return new Promise((resolve, reject) => {
+                const geolocation = new BMap.Geolocation()
+                geolocation.enableSDKLocation() // 开启辅助定位
+                geolocation.getCurrentPosition(r => {
+                    if (geolocation.getStatus() == BMAP_STATUS_SUCCESS) {
+                        const location = {
+                            city: r.address.city,
+                            province: r.address.province
+                        }
+                        resolve(location)
+                        console.log(location)
+                    } else {
+                        reject(new Error('定位失败!'))
+                    }
+                })
+            })
+        }
+
+        // 逻辑判断储存中的位置信息，不一样就更新
+        const locInStorage = localStorage.getItem('location')
+        if (locInStorage) {
+            const locObjInStorage = JSON.parse(locInStorage)
+            getLocation()
+                .then(res => {
+                    // 获取到的定位和储存中是一样的情况就不用更新定位信息
+                    if (res.province == locObjInStorage.province && res.city == locObjInStorage.city) {
+                        commit('SET_LOCATION', locObjInStorage)
+                    } else {
+                        localStorage.setItem('location', JSON.stringify(res))
+                        commit('SET_LOCATION', res)
+                    }
+                })
+                .catch(() => {})
+        } else {
+            getLocation()
+                .then(res => {
+                    localStorage.setItem('location', JSON.stringify(res))
+                    commit('SET_LOCATION', res)
+                })
+                .catch(() => {})
+        }
     }
 }
 
