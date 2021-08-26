@@ -1,10 +1,16 @@
 <template>
     <div class="container">
         <!-- 天气信息容器 -->
-        <div v-if="info.city" class="weather-container">
-            <div class="temperature-box">{{ format(info.temperature) }}</div>
+        <div v-if="weatherInfo.position.city" class="weather-container">
+            <div class="temperature-box">
+                <el-popover popper-class="popper-class" placement="right" width="1000" trigger="click">
+                    <weather-pver></weather-pver>
+                    <div slot="reference">{{ format(weatherInfo.weather.temperature) }}</div>
+                </el-popover>
+            </div>
+
             <div class="city-box">
-                <div class="city-bottom"><i class="el-icon-location"></i>{{ info.city }}</div>
+                <div class="city-bottom"><i class="el-icon-location"></i>{{ weatherInfo.position.city }}</div>
             </div>
         </div>
         <!-- 等待动画容器 -->
@@ -16,27 +22,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { weather } from '@/api/weather'
+import WeatherPver from './WeatherPver.vue'
+
 
 export default {
+    components: {
+        WeatherPver
+    },
     data() {
         return {
-            info: {
-                temperature: '',
-                city: '',
-            },
         }
     },
     computed: {
-        ...mapGetters(['location']),
-    },
-    created() {
-        weather(this.location)
-            .then((res) => {
-                this.info.temperature = res.data.weather?.temperature
-                this.info.city = res.data.position?.city
-            })
-            .catch(() => {})
+        ...mapGetters(['weatherInfo']),
     },
     methods: {
         format(t) {
@@ -47,7 +45,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$waitColor: #409EFF;
+$waitColor: #409eff;
 
 .container {
     height: 100%;
@@ -80,6 +78,12 @@ $waitColor: #409EFF;
             text-align: right;
             margin-left: 10px;
             color: #606266;
+            cursor: pointer;
+
+            .popper-class {
+                height: 500px;
+                background-color: aliceblue;
+            }
         }
 
         .city-box {

@@ -30,6 +30,8 @@ router.beforeEach(async (to, from, next) => {
                 next()
             } else {
                 try {
+                    // 获取天气
+                    store.dispatch('weather/getWeather')
                     // get user info
                     await store.dispatch('user/getInfo')
                     next()
