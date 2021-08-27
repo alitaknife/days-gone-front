@@ -1,5 +1,6 @@
 <template>
     <div class="container-popper">
+        <!-- 顶部 -->
         <div class="header">
             <div class="header-left">
                 <div class="location-b">
@@ -9,6 +10,7 @@
             </div>
             <div class="header-right" v-html="headerRightFormat(weatherInfo.base)"></div>
         </div>
+        <!-- 中间内容 -->
         <div class="content">
             <div class="content-up">
                 <div class="temperature">{{ temperatureFormat(weatherInfo.weather) }}</div>
@@ -18,16 +20,24 @@
                 </div>
             </div>
             <div class="content-down">
-                <div v-for="(index, item) in 4" :key="index">{{ item }}</div>
+                <div v-for="(item, index) in getFeatureArr(weatherInfo.feature)" :key="index">{{ item }}</div>
             </div>
+        </div>
+        <!-- 24小时折线图 -->
+        <div class="line-day">
+            <line-charts :forecast="weatherInfo['24_hour_forecast'].info"></line-charts>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import LineCharts from '@/components/LineCharts'
 
 export default {
+    components: {
+        LineCharts
+    },
     data() {
         return {
             // 现在是白天还是晚上
@@ -60,12 +70,18 @@ export default {
             return base ? `<div>${base.dateShort} &nbsp;&nbsp;&nbsp;${base.weekday} &nbsp;&nbsp;&nbsp;农历${base.lunar}</div>` : ''
         },
         temperatureFormat(weather) {
-            return weather.temperature? `${weather.temperature}°`: ''
+            return weather.temperature ? `${weather.temperature}°` : ''
         },
         weatherFormat(weather) {
             return `<div>${weather.weather}&nbsp;&nbsp;${weather.wind_direction}&nbsp;&nbsp;&nbsp;${weather.wind_power}</div>`
-        }
-
+        },
+        getFeatureArr(feature) {
+            const humidity = feature.humidity ? `湿度${feature.humidity}%` : ''
+            const ultraviolet = feature.ultraviolet ? `紫外线${feature.ultraviolet}` : ''
+            const sunriseTime = feature.sunriseTime ? `日出${feature.sunriseTime}` : ''
+            const sunsetTime = feature.sunsetTime ? `日落${feature.sunsetTime}` : ''
+            return [humidity, ultraviolet, sunriseTime, sunsetTime]
+        },
     },
 }
 </script>
@@ -78,12 +94,11 @@ export default {
 }
 
 .container-popper {
-    height: 500px;
+    height: 760px;
     width: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
     color: #606266;
 
     .header {
@@ -121,7 +136,7 @@ export default {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            height: 100px;
+            height: 110px;
 
             .temperature {
                 height: 100px;
@@ -143,7 +158,7 @@ export default {
                     line-height: 20px;
                     text-align: center;
                     border-radius: 20px;
-                    background-color: #67c23a;
+                    background-color: rgb(145, 204, 117);
                 }
 
                 .wind {
@@ -154,12 +169,19 @@ export default {
         }
 
         .content-down {
-            background-color: #67c23a;
-            height: 70px;
+            height: 60px;
             @extend .flex-row-btw;
+            justify-content: flex-start;
+            
             div {
+                margin-right: 20px;
             }
         }
+    }
+
+    .line-day {
+        width: 100%;
+        margin-top: 20px;
     }
 }
 </style>

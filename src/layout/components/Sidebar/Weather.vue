@@ -24,14 +24,12 @@
 import { mapGetters } from 'vuex'
 import WeatherPver from './WeatherPver.vue'
 
-
 export default {
     components: {
-        WeatherPver
+        WeatherPver,
     },
     data() {
-        return {
-        }
+        return {}
     },
     computed: {
         ...mapGetters(['weatherInfo']),
@@ -81,7 +79,7 @@ $waitColor: #409eff;
             cursor: pointer;
 
             .popper-class {
-                height: 500px;
+                height: 1000px;
                 background-color: aliceblue;
             }
         }

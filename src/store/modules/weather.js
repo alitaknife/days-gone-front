@@ -7,12 +7,24 @@ const state = {
             ps_pm25: ''
         },
         weather: {
-            temperature: ''
+            temperature: '',
+            weather: '',
+            wind_direction: '',
+            wind_power: ''
         },
         position: {
             city: ''
         },
-        long_day_forecast: {}
+        long_day_forecast: {},
+        feature: {
+            humidity: '',
+            sunriseTime: '',
+            sunsetTime: '',
+            ultraviolet: '',
+        },
+        '24_hour_forecast': {
+            info: []
+        }
     }
 }
 
