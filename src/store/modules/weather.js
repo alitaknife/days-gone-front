@@ -20,11 +20,15 @@ const state = {
             humidity: '',
             sunriseTime: '',
             sunsetTime: '',
-            ultraviolet: '',
+            ultraviolet: ''
         },
         '24_hour_forecast': {
             info: []
-        }
+        },
+        '15_day_forecast': {
+            info: []
+        },
+        recommend_zhishu: { desc: '' }
     }
 }
 

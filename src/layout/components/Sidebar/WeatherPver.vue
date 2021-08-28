@@ -25,18 +25,23 @@
         </div>
         <!-- 24小时折线图 -->
         <div class="line-day">
-            <line-charts :forecast="weatherInfo['24_hour_forecast'].info"></line-charts>
+            <day-forecast :forecast="weatherInfo['24_hour_forecast'].info"></day-forecast>
+        </div>
+        <div class="line-day">
+            <fif-day-forecast :forecast="weatherInfo['15_day_forecast'].info" :yesterday="weatherInfo['yesterday_15d']"></fif-day-forecast>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import LineCharts from '@/components/LineCharts'
+import DayForecast from '@/components/LineCharts/DayForecast.vue'
+import FifDayForecast from '@/components/LineCharts/FifDayForecast.vue'
 
 export default {
     components: {
-        LineCharts
+        DayForecast,
+        FifDayForecast
     },
     data() {
         return {
@@ -172,7 +177,7 @@ export default {
             height: 60px;
             @extend .flex-row-btw;
             justify-content: flex-start;
-            
+
             div {
                 margin-right: 20px;
             }

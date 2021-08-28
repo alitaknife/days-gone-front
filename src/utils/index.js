@@ -121,3 +121,30 @@ export function downloadFile(data, fileName) {
     URL.revokeObjectURL(link.href) // 释放url
     document.body.removeChild(link) // 释放标签
 }
+
+/**
+ * @param {str} res
+ */
+ export const isToday = str => {
+    let d = new Date(str).setHours(0, 0, 0, 0)
+    let today = new Date().setHours(0, 0, 0, 0)
+
+    let obj = {
+        '-86400000': '昨天',
+        0: '今天',
+        86400000: '明天'
+    }
+
+    return obj[d - today] || getWeek(str)
+}
+
+/**
+ * 根据日期字符串获取星期几
+ * @param dateString 日期字符串（如：2020-05-02）
+ * @returns {String}
+ */
+ export function getWeek(dateString) {
+    var dateArray = dateString.split('-')
+    const date = new Date(dateArray[0], parseInt(dateArray[1] - 1), dateArray[2])
+    return '星期' + '日一二三四五六'.charAt(date.getDay())
+}

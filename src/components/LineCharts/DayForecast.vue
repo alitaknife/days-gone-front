@@ -3,7 +3,7 @@
         <div class="button-container">
             <div v-for="(item, i) in dataOpts.themes" :key="i" :style="{ background: dataOpts.colors[i] }" class="change-buttons" @click="setChartOptions(item, i)">{{ item }}</div>
         </div>
-        <div id="main" style="width: 970px; height: 480px"></div>
+        <div id="main" class="main-box"></div>
     </div>
 </template>
 
@@ -76,16 +76,9 @@ export default {
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
+                        type: 'cross',
                         label: {
-                            show: true,
-                            backgroundColor: '#f4f4f5',
-                            color: '#556677',
-                            borderColor: 'rgba(0,0,0,0)',
-                            shadowColor: 'rgba(0,0,0,0)',
-                            shadowOffsetY: 0,
-                        },
-                        lineStyle: {
-                            width: 2,
+                            backgroundColor: '#6a7985',
                         },
                     },
                     formatter: (params) => {
@@ -95,7 +88,7 @@ export default {
                         return tName
                             ? `<i style="display: inline-block;width: 10px;height: 10px;background: ${param.color};margin-right: 5px;border-radius: 50%;}"></i>
                             <span display:inline-block;">${param.seriesName}：</span>${param.value}<br />
-                            <i style="display: inline-block;width: 10px;height: 10px;background: ${param.color};margin-right: 5px;border-radius: 50%;}"></i>
+                            <i style="display: inline-block;width: 10px;height: 10px;background: #73c0de;margin-right: 5px;border-radius: 50%;}"></i>
                             <span display:inline-block;">${tName}：</span>${t}`
                             : `<i style="display: inline-block;width: 10px;height: 10px;background: ${param.color};margin-right: 5px;border-radius: 50%;}"></i>
                             <span display:inline-block;">${param.seriesName}：</span>${param.value}`
@@ -115,7 +108,7 @@ export default {
                     axisLabel: {
                         formatter: '{value} ' + this.dataOpts.format[i],
                     },
-                    // min: (v) => (i == 0 || i == 3 ? v.min - 3 : null),
+                    min: (v) => (i == 0 ? v.min - 3 : null),
                 },
                 series: [
                     {
@@ -178,6 +171,11 @@ export default {
                 transition: all 0.2s;
             }
         }
+    }
+
+    .main-box {
+        height: 470px;
+        width: 950px;
     }
 }
 </style>

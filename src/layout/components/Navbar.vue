@@ -2,6 +2,9 @@
     <div class="navbar">
         <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
         <breadcrumb class="breadcrumb-container" />
+        <transition name="fade">
+            <div v-show="visible" class="recommend-container">{{ weatherInfo.recommend_zhishu.desc }}</div>
+        </transition>
 
         <div class="right-menu">
             <el-dropdown class="avatar-container" trigger="click">
@@ -15,9 +18,7 @@
                     <router-link to="/">
                         <el-dropdown-item icon="el-icon-s-home"> 首页 </el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item divided icon="el-icon-switch-button" @click.native="logout">
-                        登出
-                    </el-dropdown-item>
+                    <el-dropdown-item divided icon="el-icon-switch-button" @click.native="logout"> 登出 </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -36,11 +37,20 @@ export default {
     },
     data() {
         return {
+            visible: false,
             defaultAvatar: 'https://gitee.com/alitaknife/images/raw/master/img/panda.png',
         }
     },
     computed: {
-        ...mapGetters(['sidebar', 'avatar', 'userNickname']),
+        ...mapGetters(['sidebar', 'avatar', 'userNickname', 'weatherInfo']),
+    },
+    mounted() {
+        setTimeout(() => {
+            this.visible = true
+        }, 2000)
+        setTimeout(() => {
+            this.visible = false
+        }, 6000)
     },
     methods: {
         toggleSideBar() {
@@ -73,6 +83,14 @@ export default {
     position: relative;
     background: #fff;
     box-shadow: inset 15px 0px 6px -15px rgba(0, 21, 41, 0.08);
+
+    .recommend-container {
+        height: 50px;
+        line-height: 50px;
+        position: absolute;
+        left: 35%;
+        color: #909399;
+    }
 
     .hamburger-container {
         line-height: 46px;

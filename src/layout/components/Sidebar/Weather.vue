@@ -3,8 +3,10 @@
         <!-- 天气信息容器 -->
         <div v-if="weatherInfo.position.city" class="weather-container">
             <div class="temperature-box">
-                <el-popover popper-class="popper-class" placement="right" width="1000" trigger="click">
-                    <weather-pver></weather-pver>
+                <el-popover placement="right" width="1000" trigger="click" @show="showPopover">
+                    <el-scrollbar wrap-class="scrollbar-wrapper">
+                        <weather-pver></weather-pver>
+                    </el-scrollbar>
                     <div slot="reference">{{ format(weatherInfo.weather.temperature) }}</div>
                 </el-popover>
             </div>
@@ -38,13 +40,21 @@ export default {
         format(t) {
             return t ? `${t}°` : ''
         },
+        showPopover() {
+            // 打开面板时查询一次天气
+            this.$store.dispatch('weather/getWeather')
+        },
     },
 }
 </script>
 
 <style scoped lang="scss">
 $waitColor: #409eff;
-
+::v-deep {
+    .el-popper {
+        padding: 50px;
+    }
+}
 .container {
     height: 100%;
     width: 100%;
@@ -77,11 +87,6 @@ $waitColor: #409eff;
             margin-left: 10px;
             color: #606266;
             cursor: pointer;
-
-            .popper-class {
-                height: 1000px;
-                background-color: aliceblue;
-            }
         }
 
         .city-box {
