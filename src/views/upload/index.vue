@@ -24,27 +24,59 @@
 </template>
 
 <script>
-import { upload } from '@/api/file'
+import { upload, fastUpload } from '@/api/file'
+import hash from 'js-sha1'
 
 export default {
     data() {
         return {
             loading: false,
             fileList: [],
+            fileSha1: '',
+            fileName: '',
         }
     },
     methods: {
         handleChange(file, fileList) {
             this.fileList = fileList
+            this.fileName = file.name
+            // 获取文件  sha1
+            const reader = new FileReader()
+            reader.readAsArrayBuffer(file.raw)
+            reader.onload = (e) => {
+                try {
+                    const f = e.target.result
+                    this.fileSha1 = hash(f)
+                } catch (error) {
+                    this.fileSha1 = ''
+                }
+            }
         },
         handleUpload() {
             this.loading = true
-            const formData = new FormData()
-            formData.append('upload-file', this.fileList[0].raw)
-            upload(formData)
+            fastUpload({ fileSha1: this.fileSha1, fileName: this.fileName })
                 .then((res) => {
-                    this.$message.success('文件上传成功！')
-                    this.fileList = []
+                    const reset = () => {
+                        this.$message.success('文件上传成功！')
+                        this.fileList = []
+                        this.fileSha1 = ''
+                        this.fileName = ''
+                    }
+                    // data 为true调用普通接口，为false则秒传成功
+                    if (res.data == true) {
+                        const formData = new FormData()
+                        formData.append('upload-file', this.fileList[0].raw)
+                        upload(formData)
+                            .then(() => {
+                                reset()
+                            })
+                            .catch(() => {})
+                            .finally(() => {
+                                this.loading = false
+                            })
+                    } else {
+                        reset()
+                    }
                 })
                 .catch(() => {})
                 .finally(() => {

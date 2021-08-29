@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function fastUpload(data) {
+    return request({
+        url: '/file/fast-upload',
+        method: 'post',
+        data
+    })
+}
+
 export function upload(data) {
     return request({
         headers: { 'Content-Type': 'multipart/form-data' },
