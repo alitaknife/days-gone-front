@@ -23,6 +23,14 @@ export function getInfo() {
     })
 }
 
+export function updateInfo(data) {
+    return request({
+        url: '/user/update-info',
+        method: 'post',
+        data
+    })
+}
+
 export function logOut() {
     return request({
         url: '/user/log-out',
