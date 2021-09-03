@@ -1,8 +1,4 @@
 /**
- * Created by PanJiaChen on 16/11/18.
- */
-
-/**
  * Parse the time to string
  * @param {(Object|string|number)} time
  * @param {string} cFormat
@@ -125,7 +121,7 @@ export function downloadFile(data, fileName) {
 /**
  * @param {str} res
  */
- export const isToday = str => {
+export const isToday = str => {
     let d = new Date(str).setHours(0, 0, 0, 0)
     let today = new Date().setHours(0, 0, 0, 0)
 
@@ -143,8 +139,9 @@ export function downloadFile(data, fileName) {
  * @param dateString 日期字符串（如：2020-05-02）
  * @returns {String}
  */
- export function getWeek(dateString) {
-    var dateArray = dateString.split('-')
+export function getWeek(dateString) {
+    const dateArray = dateString.split('-')
     const date = new Date(dateArray[0], parseInt(dateArray[1] - 1), dateArray[2])
     return '星期' + '日一二三四五六'.charAt(date.getDay())
 }
+

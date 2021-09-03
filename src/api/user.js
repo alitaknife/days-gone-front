@@ -31,6 +31,23 @@ export function updateInfo(data) {
     })
 }
 
+// 图片 url 转 base64，单独提供了接口，避免前端跨域问题
+export function picToBase64(url) {
+    return request({
+        url: '/common/pic-base64',
+        method: 'get',
+        params: { url }
+    })
+}
+
+export function uploadAvatar(data) {
+    return request({
+        url: '/user/upload-avatar',
+        method: 'post',
+        data
+    })
+}
+
 export function logOut() {
     return request({
         url: '/user/log-out',

@@ -35,33 +35,42 @@
                 <el-button :loading="loading" slot="reference" type="primary">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
             </el-popconfirm>
         </div>
+        <!-- 头像更改弹出框 -->
+        <avatar-upload :visible.sync="show"></avatar-upload>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { updateInfo } from '@/api/user'
+import avatarUpload from './components/avatar-upload'
 
 export default {
+    components: {
+        avatarUpload,
+    },
     data() {
         return {
             loading: false,
+            show: false,
             form: {
-                userNickname: '马云',
-                sex: '1',
-                email: '1234567@qq.com',
-                phone: '17065473652',
+                userNickname: '',
+                sex: '',
+                email: '',
+                phone: '',
             },
         }
     },
     computed: {
         ...mapGetters(['avatar', 'userName', 'userNickname']),
     },
-    created () {
-        this.form.userNickname = this.userNickname  
+    created() {
+        this.form.userNickname = this.userNickname
     },
     methods: {
-        updateAvatar() {},
+        updateAvatar() {
+            this.show = true
+        },
         handleConfirm() {
             this.$refs['from'].validate((valid) => {
                 if (valid) {
@@ -111,7 +120,7 @@ export default {
                             top: 0;
                         }
                         to {
-                            top: -25px;
+                            top: -23px;
                         }
                     }
                 }

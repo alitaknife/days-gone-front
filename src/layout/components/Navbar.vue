@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             visible: false,
-            defaultAvatar: 'https://gitee.com/alitaknife/images/raw/master/img/panda.png',
+            defaultAvatar: 'http://gitee.com/alitaknife/images/raw/master/img/user.png',
         }
     },
     computed: {
