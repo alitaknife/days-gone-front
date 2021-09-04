@@ -15,19 +15,19 @@
                 <el-input v-model.trim="userName" :disabled="true" placeholder="请输入用户名" prefix-icon="el-icon-user" />
             </el-form-item>
             <el-form-item prop="userNickname" label="用户昵称" :required="true">
-                <el-input v-model.trim="form.userNickname" placeholder="请输入用户昵称" prefix-icon="el-icon-edit-outline" />
+                <el-input v-model.trim="form.userNickname" :placeholder="userNickname" prefix-icon="el-icon-edit-outline" />
             </el-form-item>
             <el-form-item prop="sex" label="性别" :required="true">
-                <el-select v-model="form.sex" style="width: 310px" placeholder="请选择性别">
+                <el-select v-model="form.sex" style="width: 310px" :placeholder="sex == 0 ? '女' : '男'">
                     <el-option label="女" value="0"></el-option>
                     <el-option label="男" value="1"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item prop="email" label="邮箱" :required="true">
-                <el-input v-model.trim="form.email" placeholder="请输入用户邮箱" prefix-icon="el-icon-chat-round" />
+                <el-input v-model.trim="form.email" :placeholder="email" prefix-icon="el-icon-chat-round" />
             </el-form-item>
             <el-form-item prop="phone" label="手机号" :required="true">
-                <el-input v-model.trim="form.phone" placeholder="请输入手机号" prefix-icon="el-icon-mobile-phone" />
+                <el-input v-model.trim="form.phone" :placeholder="phone" prefix-icon="el-icon-mobile-phone" />
             </el-form-item>
         </el-form>
         <div class="button-box">
@@ -62,10 +62,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['avatar', 'userName', 'userNickname']),
-    },
-    created() {
-        this.form.userNickname = this.userNickname
+        ...mapGetters(['avatar', 'userName', 'userNickname', 'email', 'sex', 'phone']),
     },
     methods: {
         updateAvatar() {

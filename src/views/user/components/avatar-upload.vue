@@ -7,6 +7,7 @@
 <script>
 import CropperImage from './cropper-image.vue'
 import { picToBase64, uploadAvatar } from '@/api/user'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -24,8 +25,11 @@ export default {
             base64Url: '',
         }
     },
+    computed: {
+        ...mapGetters(['avatar']),
+    },
     mounted() {
-        picToBase64('http://gitee.com/alitaknife/images/raw/master/img/user.png')
+        picToBase64(this.avatar)
             .then((res) => {
                 this.base64Url = res.data
             })
