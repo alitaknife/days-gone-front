@@ -42,9 +42,12 @@ export default {
         upload(data, done) {
             uploadAvatar({ avatar: data })
                 .then((res) => {
+                    this.$message.success('头像上传成功!')
                     this.close()
                 })
-                .catch(() => {})
+                .catch(() => {
+                    this.$message.error('头像上传失败!请稍后再试！')
+                })
                 .finally(() => {
                     done()
                 })

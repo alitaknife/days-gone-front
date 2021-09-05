@@ -17,11 +17,25 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import * as echarts from 'echarts/core'
-import { TitleComponent, ToolboxComponent, TooltipComponent, GridComponent, LegendComponent, MarkLineComponent, MarkPointComponent } from 'echarts/components'
-import { LineChart } from 'echarts/charts'
+import 'echarts-liquidfill'
+import { TitleComponent, ToolboxComponent, TooltipComponent, GridComponent, LegendComponent, MarkLineComponent, MarkPointComponent, GraphicComponent } from 'echarts/components'
+import { LineChart, PieChart, BarChart } from 'echarts/charts'
 import { SVGRenderer } from 'echarts/renderers'
 
-echarts.use([TitleComponent, ToolboxComponent, TooltipComponent, GridComponent, LegendComponent, MarkLineComponent, MarkPointComponent, LineChart, SVGRenderer])
+echarts.use([
+    TitleComponent,
+    ToolboxComponent,
+    TooltipComponent,
+    GridComponent,
+    LegendComponent,
+    MarkLineComponent,
+    MarkPointComponent,
+    GraphicComponent,
+    LineChart,
+    PieChart,
+    BarChart,
+    SVGRenderer
+])
 Vue.prototype.$echarts = echarts
 
 // Vue.use(ElementUI, { locale })

@@ -33,3 +33,24 @@ export function download(id) {
     })
 }
 
+export function usedCap() {
+    return request({
+        url: '/user-file/used-cap',
+        method: 'get'
+    })
+}
+
+export function filesType() {
+    return request({
+        url: '/user-file/files-type',
+        method: 'get'
+    })
+}
+
+export function uploadFileDays() {
+    return request({
+        url: '/user-file/upload-days',
+        method: 'get'
+    })
+}
+
