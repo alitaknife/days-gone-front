@@ -4,7 +4,7 @@
         <div v-if="weatherInfo.position.city" class="weather-container">
             <div class="temperature-box">
                 <el-popover placement="right" width="1000" trigger="click" @show="showPopover">
-                    <el-scrollbar wrap-class="scrollbar-wrapper">
+                    <el-scrollbar>
                         <weather-pver></weather-pver>
                     </el-scrollbar>
                     <div slot="reference">{{ format(weatherInfo.weather.temperature) }}</div>
@@ -54,6 +54,12 @@ $waitColor: #409eff;
     .el-popper {
         padding: 50px;
     }
+    .el-scrollbar__wrap {
+        overflow-x: hidden;
+    }
+}
+.el-scrollbar {
+    height: 720px;
 }
 .container {
     height: 100%;
