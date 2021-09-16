@@ -32,16 +32,22 @@
         <el-table :data="tableData" v-loading="loading" size="small" border>
             <el-table-column fixed prop="createAt" label="日期" width="150"></el-table-column>
             <el-table-column prop="fileName" label="文件名"></el-table-column>
-            <el-table-column prop="fileSha1" label="hash" width="300"></el-table-column>
+            <el-table-column prop="fileSha1" label="hash">
+                <template slot-scope="{ row }">
+                    <el-popover placement="top-start" width="200" trigger="hover" :content="row.fileSha1">
+                        <el-button slot="reference" size="mini">{{ formatHash(row.fileSha1) }}</el-button>
+                    </el-popover>
+                </template>
+            </el-table-column>
             <el-table-column prop="fileSize" label="大小" width="80" :formatter="formatSize"></el-table-column>
-            <el-table-column prop="fileAddr" label="地址" width="380"></el-table-column>
+            <el-table-column prop="fileAddr" label="地址" width="300"></el-table-column>
             <el-table-column prop="status" label="状态" width="80">
                 <template slot-scope="{ row }">
                     <el-tag v-if="row.status == 0" size="small">可用</el-tag>
                     <el-tag v-else-if="row.status == 1" type="warning" size="small">禁用</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column fixed="right" label="操作" width="300">
                 <template slot-scope="{ row }">
                     <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(row)">编 辑</el-button>
                     <el-popconfirm title="确定删除吗？" style="margin: 0 5px" @confirm="handleDelete(row)">
@@ -103,6 +109,9 @@ export default {
         this.onSubmit()
     },
     methods: {
+        formatHash(hash) {
+            return hash.substring(0, 8) + '...'
+        },
         formatSize(row) {
             return row.fileSize ? `${(row.fileSize / 1024 / 1024).toFixed(2)} M` : ''
         },

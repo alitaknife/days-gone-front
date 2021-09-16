@@ -31,7 +31,7 @@
         <!-- 表格 -->
         <el-table :data="tableData" v-loading="loading" size="small" border>
             <el-table-column fixed prop="uploadAt" label="日期" width="150"></el-table-column>
-            <el-table-column prop="fileName" label="文件名" width="350"></el-table-column>
+            <el-table-column prop="fileName" label="文件名"></el-table-column>
             <el-table-column prop="fileSha1" label="hash" width="300"></el-table-column>
             <el-table-column prop="fileSize" label="大小" :formatter="formatSize"></el-table-column>
             <el-table-column prop="status" label="状态">
@@ -40,7 +40,7 @@
                     <el-tag v-else-if="row.status == 1" type="warning" size="small">禁用</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column fixed="right" label="操作" width="300">
                 <template slot-scope="{ row }">
                     <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(row)">编 辑</el-button>
                     <el-popconfirm title="确定删除吗？" style="margin: 0 5px" @confirm="handleDelete(row)">

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CropperImage from './cropper-image.vue'
+import CropperImage from '@/components/CropperImage/index.vue'
 import { picToBase64, uploadAvatar } from '@/api/user'
 import { mapGetters } from 'vuex'
 
@@ -21,7 +21,7 @@ export default {
     },
     data() {
         return {
-            cropperName: '',
+            cropperName: '头像',
             base64Url: '',
         }
     },

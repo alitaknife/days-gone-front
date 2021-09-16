@@ -33,7 +33,7 @@
             <!--底部操作工具按钮-->
             <div class="footer-btn">
                 <div class="scope-btn">
-                    <label class="btn" for="uploads">选择封面</label>
+                    <label class="btn" for="uploads">选择{{cName}}</label>
                     <input
                         type="file"
                         id="uploads"
@@ -47,7 +47,7 @@
                     <el-button size="mini" type="danger" plain @click="rotateRight">↻ 右旋转</el-button>
                 </div>
                 <div class="upload-btn">
-                    <el-button :loading="loading" size="mini" type="success" @click="uploadImg('blob')">上传封面 <i class="el-icon-upload"></i></el-button>
+                    <el-button :loading="loading" size="mini" type="success" @click="uploadImg('blob')">上传{{cName}} <i class="el-icon-upload"></i></el-button>
                 </div>
             </div>
         </div>
