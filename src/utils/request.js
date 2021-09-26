@@ -31,7 +31,7 @@ service.interceptors.response.use(
             return handleBlob(res)
         }
         // 正常数据返回
-        if (res.code != 0) {
+        if (res.code >= 50000) {
             Message({
                 message: res.msg || 'Error',
                 type: 'error',

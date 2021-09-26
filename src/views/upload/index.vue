@@ -62,8 +62,7 @@ export default {
                         this.fileSha1 = ''
                         this.fileName = ''
                     }
-                    // data 为true调用普通接口，为false则秒传成功
-                    if (res.data == true) {
+                    if (res.code == 31002) {
                         const formData = new FormData()
                         formData.append('upload-file', this.fileList[0].raw)
                         upload(formData)
