@@ -28,8 +28,8 @@ export default {
     data() {
         return {
             used: 0,
-            types: null,
-            fileDays: []
+            types: [],
+            fileDays: [],
         }
     },
     mounted() {

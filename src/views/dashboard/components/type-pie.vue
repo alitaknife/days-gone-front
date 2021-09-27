@@ -48,7 +48,7 @@ export default {
                     formatter: '{a} <br/>{b} : {c} ({d}%)',
                 },
                 legend: {
-                    bottom: '15',
+                    bottom: '10',
                 },
                 toolbox: {
                     show: true,
@@ -58,6 +58,7 @@ export default {
                         name: '文件类型',
                         type: 'pie',
                         center: ['50%', '50%'],
+                        height: '92%',
                         roseType: 'area',
                         itemStyle: {
                             borderRadius: 8,
