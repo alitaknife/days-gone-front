@@ -61,7 +61,7 @@ const handleBlob = d => {
             reader.readAsText(d, 'utf-8')
             reader.onload = () => {
                 const r = JSON.parse(reader.result)
-                if (r.code != 0) {
+                if (r.code >= 50000) {
                     Message({
                         message: r.msg || 'Error',
                         type: 'error',
