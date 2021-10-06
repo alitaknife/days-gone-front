@@ -19,8 +19,8 @@
             </el-form-item>
             <el-form-item prop="sex" label="性别" :required="true">
                 <el-select v-model="form.sex" style="width: 310px" :placeholder="sex == 0 ? '女' : '男'">
-                    <el-option label="女" value="0"></el-option>
-                    <el-option label="男" value="1"></el-option>
+                    <el-option label="女" :value="0"></el-option>
+                    <el-option label="男" :value="1"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item prop="email" label="邮箱" :required="true">
