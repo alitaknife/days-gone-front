@@ -55,14 +55,22 @@ export default {
             show: false,
             form: {
                 userNickname: '',
-                sex: '',
-                email: '',
-                phone: '',
+                sex: this.sex,
+                email: this.email,
+                phone: this.phone,
             },
         }
     },
     computed: {
         ...mapGetters(['avatar', 'userName', 'userNickname', 'email', 'sex', 'phone']),
+    },
+    mounted() {
+        this.form = {
+            userNickname: this.userNickname,
+            sex: this.sex,
+            email: this.email,
+            phone: this.phone,
+        }
     },
     methods: {
         updateAvatar() {
@@ -80,6 +88,7 @@ export default {
                         .catch(() => {})
                         .finally(() => {
                             this.loading = false
+                            this.$store.dispatch('user/getInfo')
                         })
                 }
             })

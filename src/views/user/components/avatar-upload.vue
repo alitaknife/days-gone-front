@@ -49,6 +49,7 @@ export default {
                     this.$message.error('头像上传失败!请稍后再试！')
                 })
                 .finally(() => {
+                    this.$store.dispatch('user/getInfo')
                     done()
                 })
         },
