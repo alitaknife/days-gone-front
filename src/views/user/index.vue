@@ -55,9 +55,9 @@ export default {
             show: false,
             form: {
                 userNickname: '',
-                sex: this.sex,
-                email: this.email,
-                phone: this.phone,
+                sex: '',
+                email: '',
+                phone: '',
             },
         }
     },
