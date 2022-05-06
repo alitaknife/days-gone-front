@@ -158,7 +158,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
             background-position: 100% 101%;
             background-repeat: no-repeat;
             background-size: 80px 120px;
-            background-image: url('https://gitee.com/alitaknife/images/raw/master/img/zhuzi.png');
+            background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/zhuzi.png');
             animation: fadeIn 1s;
 
             .title-box {
@@ -169,7 +169,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
                 height: 120px;
                 margin-bottom: 30px;
                 border-radius: 50%;
-                background-image: url('https://gitee.com/alitaknife/images/raw/master/img/panda.png');
+                background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/panda.png');
                 background-size: contain;
                 box-shadow: 0 0 20px rgb(0 0 0 / 15%);
                 animation: fadeInRotate 1.5s 1 normal forwards ease;
@@ -180,7 +180,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
                 width: 40px;
                 background-size: contain;
                 background-repeat: no-repeat;
-                background-image: url('https://gitee.com/alitaknife/images/raw/master/img/vcode.png');
+                background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/vcode.png');
                 // background-color: red;
             }
 
@@ -205,7 +205,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
             top: -20px;
             right: -20px;
             background-size: 100% 100%;
-            background-image: url('https://gitee.com/alitaknife/images/raw/master/img/blue-bg.png');
+            background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/blue-bg.png');
         }
 
         .phone {
@@ -215,7 +215,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
             right: 350px;
             top: 310px;
             background-size: 100% 100%;
-            background-image: url('https://gitee.com/alitaknife/images/raw/master/img/ofc.png');
+            background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/ofc.png');
         }
 
         .plant {
@@ -225,7 +225,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
             top: 380px;
             right: 730px;
             background-size: 100% 100%;
-            background-image: url('https://gitee.com/alitaknife/images/raw/master/img/smart.png');
+            background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/smart.png');
         }
 
         .commit {
@@ -236,7 +236,7 @@ $shodow: 0 0 10px rgb(0 0 0 / 3%);
             width: 380px;
             background-size: contain;
             background-repeat: no-repeat;
-            background-image: url('https://gitee.com/alitaknife/images/raw/master/img/time.png');
+            background-image: url('https://oldnokia.oss-cn-shenzhen.aliyuncs.com/img/assets/time.png');
         }
     }
 
